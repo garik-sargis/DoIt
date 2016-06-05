@@ -8,17 +8,8 @@ import android.view.ViewGroup;
 import com.gs.doit.databinding.ListItemTaskBinding;
 
 import org.pcollections.PVector;
-import org.pcollections.TreePVector;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
-
-    public static PVector<Task> TASKS = TreePVector.empty();
-
-    static {
-        for (int i = 0; i < 100; i++) {
-            TASKS = TASKS.plus(Task.with("Title #" + i));
-        }
-    }
 
     private final LayoutInflater mInflater;
     private PVector<Task> mTasks;
@@ -26,11 +17,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     public TaskAdapter(LayoutInflater inflater, PVector<Task> initTasks) {
         mInflater = inflater;
         mTasks = initTasks;
+        setHasStableIds(true);
     }
 
     public void swapTasks(PVector<Task> newTasks) {
         mTasks = newTasks;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position ;
     }
 
     @Override

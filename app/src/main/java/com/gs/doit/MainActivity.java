@@ -11,14 +11,13 @@ import com.gs.doit.databinding.ActivityMainBinding;
 import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 
-import java.util.Random;
-
 import rx.functions.Action1;
 import rx.observers.Subscribers;
 
 public class MainActivity extends AppCompatActivity {
 
     private Store mStore;
+    private int counter = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         binding.setActivity(this);
         binding.taskList.setLayoutManager(new LinearLayoutManager(this));
-        final TaskAdapter adapter = new TaskAdapter(getLayoutInflater(), TaskAdapter.TASKS);
+        final TaskAdapter adapter = new TaskAdapter(getLayoutInflater(), TreePVector.<Task>empty());
         binding.taskList.setAdapter(adapter);
 
         setSupportActionBar(binding.appBar);
@@ -45,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onFabClick(View fab) {
-        Random rand = new Random();
-        Task task = Task.with("Task #" + rand.nextInt(100));
+        Task task = Task.with("Task #" + counter);
+        counter++;
         AddTaskAction action = new AddTaskAction(task);
         mStore.dispatch(action);
     }
